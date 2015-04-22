@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,9 @@ public class HomeNoteFragment extends Fragment {
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.note_recycler_view);
 
+        adapter = new MyAdapter(getActivity(),MockDataManager.makeMockItemList());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return layout;
     }

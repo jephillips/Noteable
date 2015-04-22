@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,9 +21,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     LayoutInflater inflater;
     List<Item> data = Collections.emptyList();
+    Context context;
 
-    public MyAdapter(Context context) {
+    public MyAdapter(Context context, ArrayList<Item> data) {
         inflater = LayoutInflater.from(context);
+        this.data = data;
+        this.context = context;
     }
 
     @Override
@@ -47,13 +52,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        @InjectView(R.id.title_text_view)
         TextView title;
-        @InjectView(R.id.description_text_view)
         TextView description;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            title = (TextView) itemView.findViewById(R.id.title_text_view);
+            description = (TextView) itemView.findViewById(R.id.description_text_view);
 
         }
     }

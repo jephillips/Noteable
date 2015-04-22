@@ -1,5 +1,6 @@
 package com.example.josh.noteable;
 
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 
-public class NoteHome extends ActionBarActivity {
+public class NoteHome extends ActionBarActivity implements HomeNoteFragment.OnFragmentInteractionListener{
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -46,5 +47,10 @@ public class NoteHome extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

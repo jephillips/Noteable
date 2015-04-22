@@ -12,6 +12,18 @@ public class MockDataManager {
         ArrayList<Item> arrayList = new ArrayList<>();
         arrayList.add(new Item("Eat chicken", "I should eat chicken"));
         arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
+        arrayList.add(new Item("Eat chicken", "I should eat chicken"));
+        arrayList.add(new Item("Go to work", "Don't want to get fired"));
         return arrayList;
     }
 
