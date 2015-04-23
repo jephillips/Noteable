@@ -1,4 +1,4 @@
-package com.example.josh.noteable;
+package com.example.josh.noteable.fragments;
 
 /**
  * Created by josh on 4/21/15.
@@ -6,7 +6,10 @@ package com.example.josh.noteable;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.josh.noteable.MyAdapter;
+import com.example.josh.noteable.domain.Item;
+import com.example.josh.noteable.adapters.MyAdapter;
+import com.example.josh.noteable.R;
+import com.example.josh.noteable.mockers.MockDataManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,6 +34,7 @@ public class HomeNoteFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private MyAdapter adapter;
+
 
     @InjectView(R.id.parent_note_title)
     TextView parentTitle;
@@ -103,9 +110,16 @@ public class HomeNoteFragment extends Fragment {
         mListener = null;
     }
 
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    public void showNoticeDialog() {
+        FragmentManager manager = getFragmentManager();
+        CreateNoteDialogFragment dialog = new CreateNoteDialogFragment();
+        dialog.show(getFragmentManager(), "CreateNoteDialogFragment");
     }
 
 }

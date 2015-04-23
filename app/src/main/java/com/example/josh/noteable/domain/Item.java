@@ -1,4 +1,4 @@
-package com.example.josh.noteable;
+package com.example.josh.noteable.domain;
 
 /**
  * Created by josh on 4/21/15.
