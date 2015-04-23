@@ -18,6 +18,7 @@ public class Item {
     public Item(String title, String description){
         this.title = title;
         this.description = description;
+        itemArrayList = new ArrayList<>();
     }
 
     public void editDescription(String description) {
@@ -30,6 +31,10 @@ public class Item {
 
     public ArrayList<Item> getItemArrayList() {
         return itemArrayList;
+    }
+
+    public void addItem(Item item) {
+        itemArrayList.add(item);
     }
 
     public String getDescription() {

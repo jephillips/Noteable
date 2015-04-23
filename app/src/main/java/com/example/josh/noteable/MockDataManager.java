@@ -27,5 +27,16 @@ public class MockDataManager {
         return arrayList;
     }
 
+    public static Item makeMockItem(ArrayList<Item> itemArrayList) {
+
+        Item item = new Item("Mock item", "This item contains items");
+
+        for (Item currentItem : itemArrayList) {
+            item.addItem(currentItem);
+        }
+
+        return item;
+    }
+
 }
 

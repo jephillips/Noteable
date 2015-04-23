@@ -29,9 +29,8 @@ public class NoteHome extends ActionBarActivity implements HomeNoteFragment.OnFr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_note_home, menu);
-        return true;
+        return(super.onCreateOptionsMenu(menu));
     }
 
     @Override
@@ -44,6 +43,9 @@ public class NoteHome extends ActionBarActivity implements HomeNoteFragment.OnFr
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+
+        } else if (id == R.id.add_note) {
+
         }
 
         return super.onOptionsItemSelected(item);

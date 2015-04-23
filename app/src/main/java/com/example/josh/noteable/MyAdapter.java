@@ -7,12 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import butterknife.InjectView;
 
 /**
  * Created by josh on 4/21/15.
@@ -20,13 +16,14 @@ import butterknife.InjectView;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     LayoutInflater inflater;
-    List<Item> data = Collections.emptyList();
+    List<Item> itemList = Collections.emptyList();
     Context context;
 
-    public MyAdapter(Context context, ArrayList<Item> data) {
+    public MyAdapter(Context context, Item currentItem) {
         inflater = LayoutInflater.from(context);
-        this.data = data;
+        this.itemList = currentItem.getItemArrayList();
         this.context = context;
+
     }
 
     @Override
@@ -40,14 +37,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
-        Item currentItem = data.get(position);
+        Item currentItem = itemList.get(position);
         holder.title.setText(currentItem.getTitle());
         holder.description.setText(currentItem.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return itemList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
