@@ -7,7 +7,7 @@
 
     <fragment
         android:name="com.example.josh.noteable.fragments.HomeNoteFragment"
-        android:id="@+id/note_fragment"
+        android:id="@+id/home_note_fragment"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentEnd="true" />

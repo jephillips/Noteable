@@ -1,26 +1,29 @@
 package com.example.josh.noteable.activities;
 
-import android.app.FragmentManager;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+import android.widget.Toast;
 
 import com.example.josh.noteable.R;
 import com.example.josh.noteable.domain.Item;
 import com.example.josh.noteable.fragments.HomeNoteFragment;
 import com.example.josh.noteable.fragments.CreateNoteDialogFragment;
 
+import com.example.josh.noteable.interfaces.AddNoteListener;
+
 import java.util.ArrayList;
 
 
-public class NoteHome extends AppCompatActivity implements HomeNoteFragment.OnFragmentInteractionListener,
-    CreateNoteDialogFragment.NoticeDialogListener {
+public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragment.OnFragmentInteractionListener,
+        AddNoteListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -28,16 +31,19 @@ public class NoteHome extends AppCompatActivity implements HomeNoteFragment.OnFr
     private ArrayList<Item> itemArrayList;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_home);
 
+//        Fragment homeNoteFragment = new HomeNoteFragment();
+//        FragmentManager manager = getSupportFragmentManager();
+//        FragmentTransaction transaction = manager.beginTransaction();
+//        transaction.add(R.id.note_activity_layout, homeNoteFragment, "HomeNoteFragment").commit();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,6 +63,7 @@ public class NoteHome extends AppCompatActivity implements HomeNoteFragment.OnFr
             return true;
 
         } else if (id == R.id.add_note) {
+            showNoticeDialog(item);
             return true;
         }
 
@@ -68,15 +75,15 @@ public class NoteHome extends AppCompatActivity implements HomeNoteFragment.OnFr
 
     }
 
-    @Override
-    public void onNoteAdded(CreateNoteDialogFragment dialog, Item newItem) {
-
-    }
-
-
-    public void showNoticeDialog(View view) {
-        FragmentManager manager = getFragmentManager();
+    public void showNoticeDialog(MenuItem menuItem) {
         CreateNoteDialogFragment dialog = new CreateNoteDialogFragment();
         dialog.show(getSupportFragmentManager(), "CreateNoteDialogFragment");
+    }
+
+    @Override
+    public void onNoteAdded(Item newItem) {
+        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.home_note_fragment);
+        noteFragment.addNote(newItem);
     }
 }

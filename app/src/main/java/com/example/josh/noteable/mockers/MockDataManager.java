@@ -29,7 +29,7 @@ public class MockDataManager {
         return arrayList;
     }
 
-    public static Item makeMockItem(ArrayList<Item> itemArrayList) {
+    public static Item makeMockItemWithArray(ArrayList<Item> itemArrayList) {
 
         Item item = new Item("Mock item", "This item contains items");
 
@@ -38,6 +38,10 @@ public class MockDataManager {
         }
 
         return item;
+    }
+
+    public static Item makeMockItem(){
+        return new Item("Base Note", "Create new notes from here");
     }
 
 }

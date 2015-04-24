@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.josh.noteception.HomeNoteFragment">
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,15 +28,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/parent_note_description" />
 
-    <!--<Button-->
-        <!--style="?android:attr/buttonStyleSmall"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Add"-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_above="@+id/note_recycler_view"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_marginEnd="33dp"-->
-        <!--android:onClick="showNoticeDialog"/>-->
+
 
 </RelativeLayout>

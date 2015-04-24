@@ -6,23 +6,18 @@ package com.example.josh.noteable.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.josh.noteable.domain.Item;
-import com.example.josh.noteable.adapters.MyAdapter;
+import com.example.josh.noteable.adapters.NoteRecyclerAdapter;
 import com.example.josh.noteable.R;
+import com.example.josh.noteable.interfaces.AddNoteListener;
 import com.example.josh.noteable.mockers.MockDataManager;
 
 import butterknife.ButterKnife;
@@ -30,10 +25,11 @@ import butterknife.InjectView;
 
 public class HomeNoteFragment extends Fragment {
 
-
+    private AddNoteListener addNoteDialogListener;
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private MyAdapter adapter;
+    private NoteRecyclerAdapter adapter;
+    private Item currentItem;
 
 
     @InjectView(R.id.parent_note_title)
@@ -48,44 +44,31 @@ public class HomeNoteFragment extends Fragment {
     }
 
     public HomeNoteFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_note_home, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add_note) {
-
-            return (true);
-        }
-
-        return(super.onOptionsItemSelected(item));
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        
         View layout = inflater.inflate(R.layout.fragment_home_note, container, false);
         ButterKnife.inject(this, layout);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.note_recycler_view);
-        Item item = MockDataManager.makeMockItem(MockDataManager.makeMockItemList());
-        parentTitle.setText(item.getTitle());
-        parentDescription.setText(item.getDescription());
+        currentItem = MockDataManager.makeMockItem();
+        parentTitle.setText(currentItem.getTitle());
+        parentDescription.setText(currentItem.getDescription());
 
-        adapter = new MyAdapter(getActivity(), item);
+        adapter = new NoteRecyclerAdapter(getActivity(), currentItem);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -102,24 +85,20 @@ public class HomeNoteFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        addNoteDialogListener = (AddNoteListener) activity;
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void showNoticeDialog() {
-        FragmentManager manager = getFragmentManager();
-        CreateNoteDialogFragment dialog = new CreateNoteDialogFragment();
-        dialog.show(getFragmentManager(), "CreateNoteDialogFragment");
+    public void addNote(Item newItem){
+        currentItem.addItem(newItem);
+
     }
+
+
+
 
 }

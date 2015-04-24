@@ -15,13 +15,14 @@ import android.widget.Toast;
 
 import com.example.josh.noteable.R;
 import com.example.josh.noteable.domain.Item;
+import com.example.josh.noteable.interfaces.AddNoteListener;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class CreateNoteDialogFragment extends DialogFragment implements View.OnClickListener {
+public class CreateNoteDialogFragment extends DialogFragment{
 
     @InjectView(R.id.create_note_title)
     EditText titleEditText;
@@ -30,21 +31,8 @@ public class CreateNoteDialogFragment extends DialogFragment implements View.OnC
     @InjectView(R.id.create_note_button)
     Button createButton;
 
+    AddNoteListener addNoteListener;
 
-
-    NoticeDialogListener mListener;
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == createButton.getId()) {
-
-            Item newItem = new Item(titleEditText.getText().toString()
-                    , descriptionEditText.getText().toString());
-            System.out.print("Click click");
-            mListener.onNoteAdded(this, newItem);
-
-        }
-    }
 
     @Override
     public void onStart()
@@ -62,16 +50,9 @@ public class CreateNoteDialogFragment extends DialogFragment implements View.OnC
     }
 
 
-    public interface NoticeDialogListener {
-        public void onNoteAdded(CreateNoteDialogFragment dialog, Item newItem);
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //getActivity().requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
-
     }
 
     public static CreateNoteDialogFragment newInstance(int title) {
@@ -82,29 +63,33 @@ public class CreateNoteDialogFragment extends DialogFragment implements View.OnC
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (NoticeDialogListener) activity;
+            addNoteListener = (AddNoteListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement NoticeDialogListener");
+            throw new ClassCastException(activity.toString() + "must implement AddNoteListener");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        setCancelable(false);
-        View view= inflater.inflate(R.layout.add_note_fragment, null);
+        View view= inflater.inflate(R.layout.add_note_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Item newItem = new Item(titleEditText.getText().toString(),
+                        descriptionEditText.getText().toString());
+                addNoteListener.onNoteAdded(newItem);
 
-    /*
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        AlertDialog alertDialog = dialogBuilder.create();
-
-        return alertDialog;
-
+                dismiss();
+            }
+        });
     }
-*/
 
 }
