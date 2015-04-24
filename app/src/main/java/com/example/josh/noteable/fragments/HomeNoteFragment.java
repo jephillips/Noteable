@@ -99,9 +99,12 @@ public class HomeNoteFragment extends Fragment {
     }
 
     public void enterNote(Item enteredItem) {
+        enteredItem.addItem(new Item("Test", "This is a test"));
         adapter = new NoteRecyclerAdapter(getActivity(), enteredItem);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        parentTitle.setText(enteredItem.getTitle());
+        parentDescription.setText(enteredItem.getDescription());
     }
 
 
