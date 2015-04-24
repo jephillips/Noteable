@@ -3,14 +3,15 @@ package com.example.josh.noteable.domain;
 /**
  * Created by josh on 4/21/15.
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by josh on 4/21/15.
  */
-public class Item {
+public class Item implements Serializable {
 
-
+    private Item parent;
     private String title;
     private String description;
     private ArrayList<Item> itemArrayList;
@@ -44,4 +45,8 @@ public class Item {
     public String getTitle() {
         return title;
     }
+
+    public Item getParent() { return parent;}
+
+    public void setParent(Item parent) {this.parent = parent;}
 }

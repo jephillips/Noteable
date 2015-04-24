@@ -1,7 +1,10 @@
 package com.example.josh.noteable.activities;
 
+import android.support.v4.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -34,11 +37,6 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_home);
 
-//        Fragment homeNoteFragment = new HomeNoteFragment();
-//        FragmentManager manager = getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        transaction.add(R.id.note_activity_layout, homeNoteFragment, "HomeNoteFragment").commit();
-
     }
 
     @Override
@@ -49,9 +47,6 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -86,6 +81,14 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
     public void onEnterNote(Item enteredItem) {
         HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.home_note_fragment);
+
         noteFragment.enterNote(enteredItem);
+    }
+
+    @Override
+    public void onBackPressed() {
+        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.home_note_fragment);
+        noteFragment.backToParent();
     }
 }
