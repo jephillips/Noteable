@@ -59,7 +59,7 @@ public class HomeNoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
         View layout = inflater.inflate(R.layout.fragment_home_note, container, false);
         ButterKnife.inject(this, layout);
 
@@ -96,6 +96,12 @@ public class HomeNoteFragment extends Fragment {
     public void addNote(Item newItem){
         currentItem.addItem(newItem);
 
+    }
+
+    public void enterNote(Item enteredItem) {
+        adapter = new NoteRecyclerAdapter(getActivity(), enteredItem);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
 

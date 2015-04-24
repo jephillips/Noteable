@@ -1,16 +1,11 @@
 package com.example.josh.noteable.activities;
 
-
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.josh.noteable.R;
 import com.example.josh.noteable.domain.Item;
@@ -18,12 +13,13 @@ import com.example.josh.noteable.fragments.HomeNoteFragment;
 import com.example.josh.noteable.fragments.CreateNoteDialogFragment;
 
 import com.example.josh.noteable.interfaces.AddNoteListener;
+import com.example.josh.noteable.interfaces.EnterNoteListener;
 
 import java.util.ArrayList;
 
 
 public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragment.OnFragmentInteractionListener,
-        AddNoteListener {
+        AddNoteListener, EnterNoteListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -85,5 +81,11 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
         HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.home_note_fragment);
         noteFragment.addNote(newItem);
+    }
+
+    public void onEnterNote(Item enteredItem) {
+        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.home_note_fragment);
+        noteFragment.enterNote(enteredItem);
     }
 }
