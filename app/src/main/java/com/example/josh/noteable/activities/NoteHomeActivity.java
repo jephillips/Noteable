@@ -1,5 +1,7 @@
 package com.example.josh.noteable.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.josh.noteable.R;
@@ -113,7 +116,17 @@ public class NoteHomeActivity extends AppCompatActivity implements
 
     @Override
     public void onDeleteNote(int position) {
-        fragment.deleteNote(position);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Delete note?");
+        alertDialog.setMessage("Are you sure you want to delete this note?");
+        alertDialog.setPositiveButton("Yes", new DeleteNoteDialogListener(position));
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 
@@ -122,5 +135,19 @@ public class NoteHomeActivity extends AppCompatActivity implements
         super.onBackPressed();
         backstackCounter--;
         fragment = (NoteFragment) manager.findFragmentByTag("NoteFragment"+backstackCounter);
+    }
+
+    private class DeleteNoteDialogListener implements DialogInterface.OnClickListener {
+        int position;
+
+        public DeleteNoteDialogListener(int position){
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            fragment.deleteNote(position);
+            dialog.dismiss();
+        }
     }
 }

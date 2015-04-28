@@ -77,6 +77,8 @@ public class CreateNoteDialogFragment extends DialogFragment{
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View view= inflater.inflate(R.layout.add_note_fragment, container, false);
         ButterKnife.inject(this, view);
+        titleEditText.setText("Test Note");
+        descriptionEditText.setText("I'm tired of typing");
         return view;
     }
 
