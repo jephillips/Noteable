@@ -1,43 +1,69 @@
 package com.example.josh.noteable.activities;
 
-import android.support.v4.app.Fragment;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.josh.noteable.R;
 import com.example.josh.noteable.domain.Item;
-import com.example.josh.noteable.fragments.HomeNoteFragment;
+import com.example.josh.noteable.fragments.NoteFragment;
 import com.example.josh.noteable.fragments.CreateNoteDialogFragment;
 
 import com.example.josh.noteable.interfaces.AddNoteListener;
 import com.example.josh.noteable.interfaces.EnterNoteListener;
+import com.example.josh.noteable.mockers.MockDataManager;
+import com.example.josh.noteable.mockers.MockServerFetchEvent;
 
-import java.util.ArrayList;
+import net.steamcrafted.loadtoast.LoadToast;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 
-public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragment.OnFragmentInteractionListener,
+public class NoteHomeActivity extends AppCompatActivity implements
         AddNoteListener, EnterNoteListener {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Item> itemArrayList;
 
+    @InjectView(R.id.app_bar)
+    Toolbar toolbar;
 
+    private FragmentManager manager;
+    private Integer backstackCounter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_home);
+        manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        NoteFragment fragment = new NoteFragment();
+        transaction.add
+                (R.id.note_activity_fragment_container, fragment, "NoteFragment" + backstackCounter)
+                .addToBackStack("NoteFragment" + backstackCounter).commit();
+        ButterKnife.inject(this);
+        setSupportActionBar(toolbar);
 
     }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        EventBus.getDefault().unregister(this);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,21 +75,14 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "No Settings Yet, SORRY!", Toast.LENGTH_SHORT).show();
             return true;
-
         } else if (id == R.id.add_note) {
             showNoticeDialog(item);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     public void showNoticeDialog(MenuItem menuItem) {
@@ -73,22 +92,22 @@ public class NoteHomeActivity extends AppCompatActivity implements HomeNoteFragm
 
     @Override
     public void onNoteAdded(Item newItem) {
-        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.home_note_fragment);
+        NoteFragment noteFragment = (NoteFragment)getSupportFragmentManager()
+                .findFragmentByTag("NoteFragment"+ backstackCounter);
         noteFragment.addNote(newItem);
+        Toast.makeText(this, "Note Added!", Toast.LENGTH_SHORT).show();
+
     }
 
     public void onEnterNote(Item enteredItem) {
-        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.home_note_fragment);
-
-        noteFragment.enterNote(enteredItem);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("EnteredItem", enteredItem);
+        NoteFragment newNoteFrag = NoteFragment.newInstance(bundle);
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.note_activity_fragment_container, newNoteFrag, "NoteFragment" + backstackCounter)
+            .addToBackStack("NoteFragment" + backstackCounter).commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        HomeNoteFragment noteFragment = (HomeNoteFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.home_note_fragment);
-        noteFragment.backToParent();
-    }
+
+
 }

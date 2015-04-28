@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class CreateNoteDialogFragment extends DialogFragment{
     EditText descriptionEditText;
     @InjectView(R.id.create_note_button)
     Button createButton;
+    @InjectView(R.id.cancel_button)
+    Button cancelButton;
 
     AddNoteListener addNoteListener;
 
@@ -71,7 +74,7 @@ public class CreateNoteDialogFragment extends DialogFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        setCancelable(false);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View view= inflater.inflate(R.layout.add_note_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
@@ -90,6 +93,11 @@ public class CreateNoteDialogFragment extends DialogFragment{
                 dismiss();
             }
         });
+    }
+
+    @OnClick(R.id.cancel_button)
+    public void cancelDialog(){
+        dismiss();
     }
 
 }

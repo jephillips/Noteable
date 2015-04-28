@@ -4,7 +4,6 @@ package com.example.josh.noteable.fragments;
  * Created by josh on 4/21/15.
  */
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,29 +22,28 @@ import com.example.josh.noteable.mockers.MockDataManager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class HomeNoteFragment extends Fragment {
+public class NoteFragment extends Fragment {
 
     private AddNoteListener addNoteDialogListener;
-    private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private NoteRecyclerAdapter adapter;
     private Item currentItem;
 
 
     @InjectView(R.id.parent_note_title)
-    TextView parentTitle;
+    TextView headerTitle;
     @InjectView(R.id.parent_note_description)
-    TextView parentDescription;
+    TextView headerDescription;
 
-    // TODO: Rename and change types and number of parameters
-    public static HomeNoteFragment newInstance(Bundle savedInstanceState) {
+    public static NoteFragment newInstance(Bundle bundledArgs) {
 
-        HomeNoteFragment newFragment = new HomeNoteFragment();
-        newFragment.setArguments(savedInstanceState);
+        NoteFragment newFragment = new NoteFragment();
+        Item newItem = (Item) bundledArgs.getSerializable("EnteredItem");
+        newFragment.setCurrentItem(newItem);
         return newFragment;
     }
 
-    public HomeNoteFragment() {
+    public NoteFragment() {
 
     }
 
@@ -53,10 +51,7 @@ public class HomeNoteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-        currentItem = (Item) savedInstanceState.getSerializable("NewItem");
-        }
+        setRetainInstance(true);
     }
 
     @Override
@@ -70,8 +65,8 @@ public class HomeNoteFragment extends Fragment {
             currentItem = MockDataManager.makeMockItem();
         }
 
-        parentTitle.setText(currentItem.getTitle());
-        parentDescription.setText(currentItem.getDescription());
+        headerTitle.setText(currentItem.getTitle());
+        headerDescription.setText(currentItem.getDescription());
 
         adapter = new NoteRecyclerAdapter(getActivity(), currentItem);
         recyclerView = (RecyclerView) layout.findViewById(R.id.note_recycler_view);
@@ -86,17 +81,11 @@ public class HomeNoteFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            addNoteDialogListener = (AddNoteListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement AddNoteListener");
         }
-        addNoteDialogListener = (AddNoteListener) activity;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
     public void addNote(Item newItem){
@@ -105,23 +94,28 @@ public class HomeNoteFragment extends Fragment {
 
     }
 
-    public void enterNote(Item enteredItem) {
-        currentItem = enteredItem;
-        enteredItem.addItem(new Item("Test", "This is a test"));
-        adapter = new NoteRecyclerAdapter(getActivity(), enteredItem);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        parentTitle.setText(enteredItem.getTitle());
-        parentDescription.setText(enteredItem.getDescription());
-    }
+//    public void enterNote(Item enteredItem) {
+//        currentItem = enteredItem;
+//        adapter = new NoteRecyclerAdapter(getActivity(), enteredItem);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        headerTitle.setText(enteredItem.getTitle());
+//        headerDescription.setText(enteredItem.getDescription());
+//    }
+//
+//    public void backToParent() {
+//        Item grandParent = currentItem.getParent().getParent();
+//        Item parent = currentItem.getParent();
+//        parent.setParent(grandParent);
+//        adapter = new NoteRecyclerAdapter(getActivity(), parent);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        headerTitle.setText(parent.getTitle());
+//        headerDescription.setText(parent.getDescription());
+//    }
 
-    public void backToParent() {
-        Item parent = currentItem.getParent();
-        adapter = new NoteRecyclerAdapter(getActivity(), parent);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        parentTitle.setText(parent.getTitle());
-        parentDescription.setText(parent.getDescription());
+    public void setCurrentItem(Item newItem) {
+        currentItem = newItem;
     }
 
 
