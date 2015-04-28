@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.josh.noteable.R;
 import com.example.josh.noteable.activities.NoteHomeActivity;
 import com.example.josh.noteable.domain.Item;
+import com.example.josh.noteable.interfaces.DeleteNoteListener;
 import com.example.josh.noteable.interfaces.EnterNoteListener;
 
 import java.util.Collections;
@@ -22,13 +24,15 @@ import java.util.List;
 public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapter.MyViewHolder> {
 
     LayoutInflater inflater;
+    Item parentItem;
     Item currentItem;
     List<Item> itemList = Collections.emptyList();
     Context context;
 
-    public NoteRecyclerAdapter(Context context, Item currentItem) {
+    public NoteRecyclerAdapter(Context context, Item parentItem) {
         inflater = LayoutInflater.from(context);
-        this.itemList = currentItem.getItemArrayList();
+        this.parentItem = parentItem;
+        this.itemList = parentItem.getItemArrayList();
         this.context = context;
 
     }
@@ -48,22 +52,26 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
         holder.title.setText(currentItem.getTitle());
         holder.description.setText(currentItem.getDescription());
         holder.itemView.setOnClickListener(new EnterNoteClickListener(position));
+        holder.deleteButton.setOnClickListener(new DeleteNoteClickListener(position));
+
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return parentItem.getItemArrayList().size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView title;
         TextView description;
+        ImageButton deleteButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_text_view);
             description = (TextView) itemView.findViewById(R.id.description_text_view);
+            deleteButton = (ImageButton) itemView.findViewById(R.id.card_delete_button);
 
         }
     }
@@ -80,6 +88,18 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
             currentItem = itemList.get(position);
             enterNoteListener = (EnterNoteListener) context;
             enterNoteListener.onEnterNote(currentItem);
+        }
+    }
+
+    class DeleteNoteClickListener implements View.OnClickListener {
+        private int position;
+        private DeleteNoteListener deleteNoteListener;
+
+        public DeleteNoteClickListener(int position) { this.position = position; }
+        @Override
+        public void onClick(View v) {
+            deleteNoteListener = (DeleteNoteListener) context;
+            deleteNoteListener.onDeleteNote(position);
         }
     }
 }

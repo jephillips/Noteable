@@ -4,10 +4,14 @@ import com.example.josh.noteable.domain.Item;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by josh on 4/21/15.
  */
 public class MockDataManager {
+
+    public MockRunnable runnable = new MockRunnable();
 
     public static ArrayList<Item> makeMockItemList() {
 
@@ -44,5 +48,19 @@ public class MockDataManager {
         return new Item("Base Note", "Create new notes from here");
     }
 
+
+    public class MockRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            Thread thread = new Thread();
+            try {
+                thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            EventBus.getDefault().post(new MockServerFetchEvent());
+        }
+    }
 }
 

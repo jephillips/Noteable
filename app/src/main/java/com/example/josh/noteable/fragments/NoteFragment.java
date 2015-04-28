@@ -25,7 +25,6 @@ import butterknife.InjectView;
 public class NoteFragment extends Fragment {
 
     private AddNoteListener addNoteDialogListener;
-    private RecyclerView recyclerView;
     private NoteRecyclerAdapter adapter;
     private Item currentItem;
 
@@ -34,6 +33,8 @@ public class NoteFragment extends Fragment {
     TextView headerTitle;
     @InjectView(R.id.parent_note_description)
     TextView headerDescription;
+    @InjectView(R.id.note_recycler_view)
+    RecyclerView recyclerView;
 
     public static NoteFragment newInstance(Bundle bundledArgs) {
 
@@ -46,7 +47,6 @@ public class NoteFragment extends Fragment {
     public NoteFragment() {
 
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,6 @@ public class NoteFragment extends Fragment {
         headerDescription.setText(currentItem.getDescription());
 
         adapter = new NoteRecyclerAdapter(getActivity(), currentItem);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.note_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -91,34 +90,15 @@ public class NoteFragment extends Fragment {
     public void addNote(Item newItem){
         newItem.setParent(currentItem);
         currentItem.addItem(newItem);
-
     }
 
-//    public void enterNote(Item enteredItem) {
-//        currentItem = enteredItem;
-//        adapter = new NoteRecyclerAdapter(getActivity(), enteredItem);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        headerTitle.setText(enteredItem.getTitle());
-//        headerDescription.setText(enteredItem.getDescription());
-//    }
-//
-//    public void backToParent() {
-//        Item grandParent = currentItem.getParent().getParent();
-//        Item parent = currentItem.getParent();
-//        parent.setParent(grandParent);
-//        adapter = new NoteRecyclerAdapter(getActivity(), parent);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        headerTitle.setText(parent.getTitle());
-//        headerDescription.setText(parent.getDescription());
-//    }
+    public void deleteNote(int position){
+        currentItem.removeItem(position);
+        adapter.notifyDataSetChanged();
+    }
 
     public void setCurrentItem(Item newItem) {
         currentItem = newItem;
     }
-
-
-
 
 }

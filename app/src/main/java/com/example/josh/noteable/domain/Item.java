@@ -38,6 +38,8 @@ public class Item implements Serializable {
         itemArrayList.add(item);
     }
 
+    public void removeItem(int position) { itemArrayList.remove(position); }
+
     public String getDescription() {
         return description;
     }

@@ -16,6 +16,7 @@ import com.example.josh.noteable.fragments.NoteFragment;
 import com.example.josh.noteable.fragments.CreateNoteDialogFragment;
 
 import com.example.josh.noteable.interfaces.AddNoteListener;
+import com.example.josh.noteable.interfaces.DeleteNoteListener;
 import com.example.josh.noteable.interfaces.EnterNoteListener;
 import com.example.josh.noteable.mockers.MockDataManager;
 import com.example.josh.noteable.mockers.MockServerFetchEvent;
@@ -28,7 +29,7 @@ import de.greenrobot.event.EventBus;
 
 
 public class NoteHomeActivity extends AppCompatActivity implements
-        AddNoteListener, EnterNoteListener {
+        AddNoteListener, EnterNoteListener, DeleteNoteListener{
 
 
     @InjectView(R.id.app_bar)
@@ -36,6 +37,7 @@ public class NoteHomeActivity extends AppCompatActivity implements
 
     private FragmentManager manager;
     private Integer backstackCounter = 1;
+    private NoteFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class NoteHomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_note_home);
         manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        NoteFragment fragment = new NoteFragment();
+        fragment = new NoteFragment();
         transaction.add
                 (R.id.note_activity_fragment_container, fragment, "NoteFragment" + backstackCounter)
                 .addToBackStack("NoteFragment" + backstackCounter).commit();
@@ -100,14 +102,25 @@ public class NoteHomeActivity extends AppCompatActivity implements
     }
 
     public void onEnterNote(Item enteredItem) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("EnteredItem", enteredItem);
-        NoteFragment newNoteFrag = NoteFragment.newInstance(bundle);
+        backstackCounter++;
+        fragment = new NoteFragment();
+        fragment.setCurrentItem(enteredItem);
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.note_activity_fragment_container, newNoteFrag, "NoteFragment" + backstackCounter)
+        transaction.replace(R.id.note_activity_fragment_container, fragment, "NoteFragment" + backstackCounter)
             .addToBackStack("NoteFragment" + backstackCounter).commit();
     }
 
 
+    @Override
+    public void onDeleteNote(int position) {
+        fragment.deleteNote(position);
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backstackCounter--;
+        fragment = (NoteFragment) manager.findFragmentByTag("NoteFragment"+backstackCounter);
+    }
 }
