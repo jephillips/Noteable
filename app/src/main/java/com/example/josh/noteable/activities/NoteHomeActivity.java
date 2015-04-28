@@ -52,7 +52,7 @@ public class NoteHomeActivity extends AppCompatActivity implements
         fragment = new NoteFragment();
         transaction.add
                 (R.id.note_activity_fragment_container, fragment, "NoteFragment" + backstackCounter)
-                .addToBackStack("NoteFragment" + backstackCounter).commit();
+                .commit();
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
 
@@ -132,11 +132,30 @@ public class NoteHomeActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        backstackCounter--;
-        fragment = (NoteFragment) manager.findFragmentByTag("NoteFragment"+backstackCounter);
-    }
+        if (backstackCounter == 1) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Exit Noteable?");
+            alertDialog.setMessage("Are you sure you want to exit?");
+            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                finish();
+                }
+            });
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.show();
+        } else {
+            super.onBackPressed();
+            backstackCounter--;
+            fragment = (NoteFragment) manager.findFragmentByTag("NoteFragment" + backstackCounter);
 
+        }
+    }
     private class DeleteNoteDialogListener implements DialogInterface.OnClickListener {
         int position;
 

@@ -90,6 +90,7 @@ public class NoteFragment extends Fragment {
     public void addNote(Item newItem){
         newItem.setParent(currentItem);
         currentItem.addItem(newItem);
+        adapter.notifyDataSetChanged();
     }
 
     public void deleteNote(int position){

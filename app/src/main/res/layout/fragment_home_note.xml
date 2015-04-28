@@ -5,22 +5,28 @@
     >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
         android:textSize="25sp"
         android:id="@+id/parent_note_title"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="#4CAF50"
+        android:textColor="#FFFFFF"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
         android:textSize="25sp"
         android:id="@+id/parent_note_description"
         android:layout_below="@id/parent_note_title"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="#4CAF50"
+        android:textColor="#FFFFFF"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/note_recycler_view"
